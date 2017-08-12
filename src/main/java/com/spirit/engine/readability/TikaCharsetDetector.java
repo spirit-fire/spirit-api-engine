@@ -16,11 +16,26 @@
  * under the License.
  */
 
-package com.spirit.engine;
+package com.spirit.engine.readability;
+
+import org.apache.tika.parser.txt.CharsetDetector;
+import org.apache.tika.parser.txt.CharsetMatch;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * Generic API for character set detection.
+ *
  */
-public interface PageCharsetDetector {
-    String detect(byte[] data, String hint);
+public class TikaCharsetDetector implements PageCharsetDetector {
+    static final Logger LOG = LoggerFactory.getLogger(TikaCharsetDetector.class);
+    @Override
+    public String detect(byte[] data, String hint) {
+        CharsetDetector detector = new CharsetDetector();
+        if (hint != null) {
+            detector.setDeclaredEncoding(hint);
+        }
+        detector.setText(data);
+        CharsetMatch match = detector.detect();
+        return match.getName();
+    }
 }

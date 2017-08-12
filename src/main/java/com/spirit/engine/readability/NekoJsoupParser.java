@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package com.spirit.engine;
+package com.spirit.engine.readability;
 
 import org.cyberneko.html.parsers.SAXParser;
 import org.jsoup.Jsoup;

@@ -16,26 +16,23 @@
  * under the License.
  */
 
-package com.spirit.engine;
-
-import org.apache.tika.parser.txt.CharsetDetector;
-import org.apache.tika.parser.txt.CharsetMatch;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+package com.spirit.engine.readability;
 
 /**
- *
+ * Interface to reading HTML pages.
  */
-public class TikaCharsetDetector implements PageCharsetDetector {
-    static final Logger LOG = LoggerFactory.getLogger(TikaCharsetDetector.class);
-    @Override
-    public String detect(byte[] data, String hint) {
-        CharsetDetector detector = new CharsetDetector();
-        if (hint != null) {
-            detector.setDeclaredEncoding(hint);
-        }
-        detector.setText(data);
-        CharsetMatch match = detector.detect();
-        return match.getName();
-    }
+public interface PageReader {
+    /**
+     * Read the content of a page. Return null and log if
+     * there's some problem or another. This is responsible
+     * for dealing with charset.
+     * @param url
+     * @return
+     */
+    String readPage(String url) throws PageReadException;
+    /**
+     * Provide a character set detector.
+     * @param detector
+     */
+    void setCharsetDetector(PageCharsetDetector detector);
 }

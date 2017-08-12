@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package com.spirit.engine;
+package com.spirit.engine.readability;
 
 /**
  *

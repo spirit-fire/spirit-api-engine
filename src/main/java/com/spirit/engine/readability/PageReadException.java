@@ -15,7 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.spirit.engine;
+package com.spirit.engine.readability;
 
 /**
  *

@@ -16,23 +16,33 @@
  * under the License.
  */
 
-package com.spirit.engine;
+package com.spirit.engine.readability;
 
 /**
- * Interface to reading HTML pages.
+ *
  */
-public interface PageReader {
-    /**
-     * Read the content of a page. Return null and log if
-     * there's some problem or another. This is responsible
-     * for dealing with charset.
-     * @param url
-     * @return
-     */
-    String readPage(String url) throws PageReadException;
-    /**
-     * Provide a character set detector.
-     * @param detector
-     */
-    void setCharsetDetector(PageCharsetDetector detector);
+public class PageInfo {
+    private String url;
+    private String content;
+    private String title;
+
+    public String getUrl() {
+        return url;
+    }
+    public void setUrl(String url) {
+        this.url = url;
+    }
+    public String getContent() {
+        return content;
+    }
+    public void setContent(String content) {
+        this.content = content;
+    }
+    public String getTitle() {
+        return title;
+    }
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
 }

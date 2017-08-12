@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package com.spirit.engine;
+package com.spirit.engine.readability;
 
 import org.apache.tika.io.IOUtils;
 import org.slf4j.Logger;
