@@ -10,6 +10,7 @@ public class ReadabilityCallBackModel {
     private String pids;
     private String text;
     private long ctime;
+    private String codeStyleFlag;
 
     public ReadabilityCallBackModel(){
 
@@ -35,6 +36,11 @@ public class ReadabilityCallBackModel {
         this.ctime = ctime;
     }
 
+    public void setCodeStyleFlag(String codeStyleFlag) {
+        this.codeStyleFlag = codeStyleFlag;
+    }
+
+    @Override
     public String toString(){
         StringBuffer sb = new StringBuffer();
         sb.append("aid=").append(this.aid);
@@ -42,6 +48,7 @@ public class ReadabilityCallBackModel {
         sb.append("&text=").append(this.text);
         sb.append("&pids=").append(this.pids);
         sb.append("&time=").append(this.ctime);
+        sb.append("&css_type=").append(this.codeStyleFlag);
         return sb.toString();
     }
 
@@ -52,6 +59,7 @@ public class ReadabilityCallBackModel {
         map.put("text", text);
         map.put("pids", pids);
         map.put("time", String.valueOf(ctime));
+        map.put("css_type", String.valueOf(codeStyleFlag));
         return map;
     }
 }

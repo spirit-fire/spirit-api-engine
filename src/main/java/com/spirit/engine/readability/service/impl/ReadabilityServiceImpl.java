@@ -77,6 +77,7 @@ public class ReadabilityServiceImpl implements ReadabilityService {
         }
         readability.processDocument(url);
         String content = readability.getArticleText();
+        String cssType = readability.getCssType();
         ArrayList<String> list = Patterns.matchGroup(Patterns.PAGE_IMG_PATTERNS, content);
         ArrayList<String> pidList = new ArrayList<String>();
         String host = getHost(url);
@@ -94,6 +95,7 @@ public class ReadabilityServiceImpl implements ReadabilityService {
         }
         callBackModel.setText(URLEncoder.encode(content, "UTF-8"));
         callBackModel.setPids(ToolUtils.implode(pidList,","));
+        callBackModel.setCodeStyleFlag(cssType);
         return callBackModel;
     }
 

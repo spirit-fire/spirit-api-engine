@@ -1,6 +1,6 @@
 /******************************************************************************
  * Copyright (c) 2010 Basis Technology Corp.
- * 
+ *
  * Basis Technology Corp. licenses this file
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
@@ -18,6 +18,7 @@
 
 package com.spirit.engine.readability;
 
+import com.spirit.commons.thd.acmatch.service.GkAcMatchService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -71,6 +72,8 @@ public class Readability {
     // for some testing and debugging purposes, obtain string reps of the XML we
     // got from parsing.
     private List<String> xmlImages;
+    private Integer codeStyleFlag = 0;
+    private String cssType;
 
     public Readability() {
         parsedPages = new HashSet<String>();
@@ -79,7 +82,7 @@ public class Readability {
     /**
      * Process the content of a page. This takes a String, since JSoup does not handle byte input. Caller has
      * to worry about charset detection and conversion.
-     * 
+     *
      * @param url the initial url
      */
     public void processDocument(String url) throws PageReadException {
@@ -93,6 +96,9 @@ public class Readability {
         }
 
         String content = pageReader.readPage(url);
+
+        // css match
+        cssType = GkAcMatchService.match(content);
 
 	document = Jsoup.parse(content);
 
@@ -218,8 +224,9 @@ public class Readability {
          */
         parsedPages.add(normalizeTrailingSlash(givenUrl));
         //respect the readAllPages flag, very important if a stringPage
-        if (readAllPages)
-	    nextPageLink = findNextPageLink(body);
+        if (readAllPages) {
+            nextPageLink = findNextPageLink(body);
+        }
 
         if (!notFirstPage) {
             title = getArticleTitle();
@@ -292,9 +299,8 @@ public class Readability {
 
     /**
      * Get an elements class/id weight. Uses regular expressions to tell if this element looks good or bad.
-     * 
-     * @param Element
-     * @return number (Integer)
+     *
+     * @param e
      **/
     private double getClassWeight(Element e) {
         if (!classWeight) {
@@ -667,7 +673,7 @@ public class Readability {
     /**
      * Clean an element of all tags of type "tag" if they look fishy. "Fishy" is an algorithm based on content
      * length, classnames, link density, number of images & embeds, etc.
-     * 
+     *
      * @return void
      **/
     private void cleanConditionally(Element e, String tag) {
@@ -742,8 +748,8 @@ public class Readability {
 
     /**
      * Clean out spurious headers from an Element. Checks things like classnames and link density.
-     * 
-     * @param Element
+     *
+     * @param e
      * @return void
      **/
     private void cleanHeaders(Element e) {
@@ -761,8 +767,8 @@ public class Readability {
      * Prepare the article node for display. Clean out any inline styles, iframes, forms, strip extraneous
      * <p>
      * tags, etc. This takes an element in, but returns a string.
-     * 
-     * @param Element
+     *
+     * @param articleContent
      * @return void
      **/
     private void prepArticle(Element articleContent) {
@@ -828,9 +834,9 @@ public class Readability {
 
     /**
      * Clean a node of all elements of type "tag".
-     * 
-     * @param Element
-     * @param string tag to clean
+     *
+     * @param e
+     * @param tag to clean
      **/
     private void clean(Element e, String tag) {
         Elements targetList = e.getElementsByTag(tag);
@@ -898,7 +904,7 @@ public class Readability {
     }
 
     private URI findBaseUrl0(String stringUrl) throws URISyntaxException {
-        //Compensate for Windows path names. 
+        //Compensate for Windows path names.
     	stringUrl = stringUrl.replace("\\", "/");
     	int qindex = stringUrl.indexOf("?");
         if (qindex != -1) {
@@ -969,8 +975,9 @@ public class Readability {
              * alphas, remove it.
              */
             /* /i again */
-            if (i < 2 && segment.length() < 3 && !urlSlashes.get(0).matches("[a-z]"))
+            if (i < 2 && segment.length() < 3 && !urlSlashes.get(0).matches("[a-z]")) {
                 del = true;
+            }
 
             /* If it's not marked for deletion, push it to cleanedSegments. */
             if (!del) {
@@ -1194,9 +1201,9 @@ public class Readability {
 
     /**
      * Get the number of times a string s appears in the node e.
-     * 
-     * @param Element
-     * @param string - what to split on. Default is ","
+     *
+     * @param e
+     * @param s - what to split on. Default is ","
      * @return number (integer)
      **/
     int getCharCount(Element e, char s) {
@@ -1239,4 +1246,11 @@ public class Readability {
         return xmlImages;
     }
 
+    public String getCssType() {
+        return cssType;
+    }
+
+    public void setCssType(String cssType) {
+        this.cssType = cssType;
+    }
 }

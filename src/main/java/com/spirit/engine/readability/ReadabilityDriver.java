@@ -54,12 +54,15 @@ public final class ReadabilityDriver {
         readability.setReadAllPages(false);
 
 //        String url = "http://www.cnblogs.com/SKILL0825/p/5971539.html";
-        String url = "http://blog.csdn.net/javazejian/article/details/71860633?t=1495827334875";
+//        String url = "http://blog.csdn.net/javazejian/article/details/71860633?t=1495827334875";
+        String url = "http://blog.csdn.net/androidlushangderen/article/details/39898557";
         try{
             readability.processDocument(url);
             String title = readability.getTitle();
             String content = readability.getArticleText();
+            String cssType = readability.getCssType();
             System.out.println(title);
+            System.out.println(cssType);
             System.out.println("======================");
             System.out.println(content);
         }catch (Exception e){
